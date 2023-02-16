@@ -8,6 +8,7 @@ const pages = Array.from({ length: 8 }).map((_, i) => i + 1);
 const App = () => {
   const [viewIndex, setViewIndex] = useState(0);
   const contentRef = useRef([]);
+
   const moveToPage = (index) => () => {
     contentRef.current[index].scrollIntoView({
       block: "start",
@@ -18,14 +19,12 @@ const App = () => {
   const scrollSpyObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        const {
-          isIntersecting,
-          boundingClientRect
-        } = entry;
+        const { isIntersecting, boundingClientRect } = entry; // isIntersectiong: target 요소가 교차하고 있는지 boolean, boundingClientRect: target 요소의 크기와 요소의 테두리 위치를 나타냄
         /**
          * 페이지의 현재 스크롤 위치
          */
         const scrollTop = window.pageYOffset;
+
         /**
          * Intersection 이벤트 발생한 요소의 높이 값
          */
@@ -38,7 +37,7 @@ const App = () => {
           const index = Math.round(scrollTop / height);
           setViewIndex(index);
         }
-      })
+      });
     },
     {
       root: null,

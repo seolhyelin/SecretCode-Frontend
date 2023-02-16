@@ -8,19 +8,27 @@ const pages = Array.from({ length: 8 }).map((_, i) => i + 1);
 const App = () => {
   const [viewIndex, setViewIndex] = useState(0);
   const contentRef = useRef([]);
+
   const moveToPage = (index) => () => {
     // do something
-    setViewIndex(index);
+    contentRef.current[index].scrollIntoView({
+      behavior: "smooth",
+      block: "end",
+    });
   };
 
   const scrollSpyObserver = new IntersectionObserver(
     (entries) => {
       // do something
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+        }
+      });
     },
     {
       root: null,
       rootMargin: "0px",
-      threshold: 0.5,
+      threshold: 0.5, // 50% 정도 보일때 실행
     }
   );
 
