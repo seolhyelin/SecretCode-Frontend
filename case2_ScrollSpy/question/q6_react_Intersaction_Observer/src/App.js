@@ -21,9 +21,18 @@ const App = () => {
     (entries) => {
       // do something
       entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-        }
+        // const { isIntersecting, boundingClientRect } = entry;
+        // const scrollTop = window.pageYOffset;
+        // const { height } = boundingClientRect;
+        // if (isIntersecting) {
+        //   const index = Math.round(scrollTop / height);
+        //   setViewIndex(index);
+        // }
       });
+
+      const { target } = entries.find((entry) => entry.isIntersecting) || {};
+      const index = contentRef.current.indexOf(target);
+      setViewIndex(index);
     },
     {
       root: null,
