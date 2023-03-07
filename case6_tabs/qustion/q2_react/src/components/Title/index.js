@@ -76,5 +76,8 @@ const Glider = styled.span`
   transition: 0.25s ease-out;
 `;
 
-const Contents = styled.div``;
+const Contents = styled.div`
+  line-height: 30px;
+  padding: 10px;
+`;
 export default Title;
