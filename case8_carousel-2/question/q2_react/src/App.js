@@ -11,6 +11,7 @@ function App() {
     "/img/movies/movie-3.jpg",
     "/img/movies/movie-4.jpg",
   ]);
+  const [loop, setLoop] = useState(null);
 
   const nextSlide = () => {
     if (currentSlide >= TOTAL_SLIDES) {
@@ -30,8 +31,24 @@ function App() {
 
   useEffect(() => {
     slideRef.current.style.transition = "transform 0.5s ease-out";
-    slideRef.current.style.transform = `translateX(-${currentSlide}00%)`;
+    slideRef.current.style.transform = `translate3D(-${currentSlide}00%,0,0)`;
   }, [currentSlide]);
+
+  useEffect(() => {
+    if (!images) {
+      clearTimeout(loop);
+    } else {
+      const swiperLoop = setTimeout(() => {
+        setCurrentSlide((prev) => {
+          if (prev < images.length - 1) {
+            return prev + 1;
+          } else return 0;
+        });
+      }, 3000);
+      setLoop(swiperLoop);
+    }
+    return clearTimeout(loop);
+  }, [images, setCurrentSlide, currentSlide]);
 
   return (
     <>
@@ -61,10 +78,24 @@ function App() {
 const Carousel = styled.div`
   position: relative;
   width: 340px;
-  height: 390px;
+  height: 190px;
   margin: 0 auto;
   overflow: hidden;
   border: 1px solid red;
+
+  .carousel-control {
+    position: absolute;
+    top: 50%;
+    z-index: 1;
+  }
+
+  .prev {
+    left: 0;
+  }
+
+  .next {
+    right: 0;
+  }
 `;
 
 const CarouselSlides = styled.div`
