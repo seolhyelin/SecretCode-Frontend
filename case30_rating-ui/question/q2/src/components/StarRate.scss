@@ -2,6 +2,12 @@
 
 .star-container {
   display: flex;
-  width: 200px;
-  margin-top: 20px;
+
+  .stars {
+    width: 500px;
+    display: flex;
+  }
+}
+.reset {
+  width: 70px;
 }

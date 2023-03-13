@@ -24884,13 +24884,15 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.StarRate = void 0;
-var _react = _interopRequireDefault(require("react"));
+var _react = _interopRequireWildcard(require("react"));
 require("./StarRate.scss");
 var _starEmpty = _interopRequireDefault(require("../../assets/star-empty.svg"));
 var _starHalf = _interopRequireDefault(require("../../assets/star-half.svg"));
 var _starFull = _interopRequireDefault(require("../../assets/star-full.svg"));
 var _reset = _interopRequireDefault(require("../../assets/reset.svg"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 // 별의 갯수 = Score
 const MAX_SCORE = 5;
 const StarRate = _ref => {
@@ -24899,16 +24901,55 @@ const StarRate = _ref => {
     score
   } = _ref;
   // Write your solution here
+  const [displayScore, setDisplayScore] = (0, _react.useState)(score);
+  const calculateScore = e => {
+    const {
+      width,
+      left
+    } = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - left;
+    const scale = width / MAX_SCORE / 2;
+    return (Math.floor(x / scale) + 1) / 2;
+  };
+  const handleMouseMove = e => {
+    setDisplayScore(calculateScore(e));
+  };
+  const resetScore = () => {
+    onChange(0);
+    setDisplayScore(0);
+  };
   return /*#__PURE__*/_react.default.createElement("div", {
     className: "star-container"
-  }, [...Array(MAX_SCORE)].map((star, index) => {
-    return /*#__PURE__*/_react.default.createElement("button", {
-      key: index,
-      onClick: () => onChange(index + 1)
-    }, /*#__PURE__*/_react.default.createElement(_starEmpty.default, null));
-  }), /*#__PURE__*/_react.default.createElement(_reset.default, null));
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "stars",
+    onClick: () => onChange(displayScore),
+    onMouseMove: handleMouseMove,
+    onMouseLeave: () => setDisplayScore(score)
+  }, [...Array(MAX_SCORE)].map((_, index) => /*#__PURE__*/_react.default.createElement(Star, {
+    key: index,
+    score: displayScore,
+    index: index
+  }))), /*#__PURE__*/_react.default.createElement(_reset.default, {
+    className: "reset",
+    onClick: resetScore
+  }));
 };
 exports.StarRate = StarRate;
+const Star = _ref2 => {
+  let {
+    score,
+    index
+  } = _ref2;
+  if (score > index) {
+    if (score - index === 0.5) {
+      return /*#__PURE__*/_react.default.createElement(_starHalf.default, null);
+    } else {
+      return /*#__PURE__*/_react.default.createElement(_starFull.default, null);
+    }
+  } else {
+    return /*#__PURE__*/_react.default.createElement(_starEmpty.default, null);
+  }
+};
 },{"react":"node_modules/react/index.js","./StarRate.scss":"src/components/StarRate.scss","../../assets/star-empty.svg":"assets/star-empty.svg","../../assets/star-half.svg":"assets/star-half.svg","../../assets/star-full.svg":"assets/star-full.svg","../../assets/reset.svg":"assets/reset.svg"}],"src/App.jsx":[function(require,module,exports) {
 "use strict";
 
@@ -24963,7 +25004,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "0.0.0.0" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52057" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53104" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

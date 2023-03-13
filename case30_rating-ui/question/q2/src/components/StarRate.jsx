@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./StarRate.scss";
 import EmptyStar from "../../assets/star-empty.svg";
 import HalfStar from "../../assets/star-half.svg";
@@ -10,16 +10,49 @@ const MAX_SCORE = 5;
 
 export const StarRate = ({ onChange, score }) => {
   // Write your solution here
+  const [displayScore, setDisplayScore] = useState(score);
+
+  const calculateScore = (e) => {
+    const { width, left } = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - left;
+    const scale = width / MAX_SCORE / 2;
+    return (Math.floor(x / scale) + 1) / 2;
+  };
+
+  const handleMouseMove = (e) => {
+    setDisplayScore(calculateScore(e));
+  };
+
+  const resetScore = () => {
+    onChange(0);
+    setDisplayScore(0);
+  };
+
   return (
     <div className="star-container">
-      {[...Array(MAX_SCORE)].map((star, index) => {
-        return (
-          <button key={index} onClick={() => onChange(index + 1)}>
-            <EmptyStar />
-          </button>
-        );
-      })}
-      <Reset />
+      <div
+        className="stars"
+        onClick={() => onChange(displayScore)}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={() => setDisplayScore(score)}
+      >
+        {[...Array(MAX_SCORE)].map((_, index) => (
+          <Star key={index} score={displayScore} index={index} />
+        ))}
+      </div>
+      <Reset className="reset" onClick={resetScore} />
     </div>
   );
+};
+
+const Star = ({ score, index }) => {
+  if (score > index) {
+    if (score - index === 0.5) {
+      return <HalfStar />;
+    } else {
+      return <FullStar />;
+    }
+  } else {
+    return <EmptyStar />;
+  }
 };
