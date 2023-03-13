@@ -1,0 +1,1 @@
+{"version":3,"sources":["src/components/StarRate.scss"],"names":[],"mappings":"AAEA;EACE;EACA;EACA","file":"src.6ebfba02.css","sourceRoot":"..","sourcesContent":["// Write your solution here\n\n.star-container {\n  display: flex;\n  width: 200px;\n  margin-top: 20px;\n}\n"]}
